@@ -1,0 +1,12 @@
+---
+- name: Configuring MAC
+  hosts: node1
+  tasks:
+  - name: Ensuring selinux is enabled
+    shell: grep "^\s*linux" /etc/grub2.cfg  
+
+  - name: Debugging
+    shell: sed 's/selinux=0//g' /etc/grub2.cfg
+    when: "'selinux=0' in result.stdout"
+...
+      

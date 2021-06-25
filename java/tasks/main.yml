@@ -1,0 +1,28 @@
+---
+# tasks file for java
+- name: Dependent file
+  yum:
+    name: libselinux-python
+    state: installed
+
+- name: Installing Java JDK
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - "{{ java_version_redhat }}-openjdk-devel"
+
+- name: Creating JAVA environment 
+  shell: a=$(update-alternatives  --display java | head -n2 | tail -n1 | awk '{ print $5 }'| cut -d '/' -f1-5) && echo "JAVA_HOME=$a" > /etc/environment
+  tags:
+   - test
+
+- name: Copy the Environment file
+  template:
+    src: /home/vagrant/tasks/java/templates/java.j2
+    dest: /root/java.sh
+    mode: 655
+
+- name: Run script on machine
+  command: /bin/bash /root/java.sh
+...

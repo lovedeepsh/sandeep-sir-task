@@ -1,0 +1,10 @@
+---
+# handlers file for Packages
+
+- name: restart service
+  service:
+     name: "{{item}}"
+     state: restarted
+  with_items:
+      - sshd
+...

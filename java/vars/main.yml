@@ -1,0 +1,5 @@
+---
+# vars file for java
+
+java_version_redhat: java-1.8.0
+...

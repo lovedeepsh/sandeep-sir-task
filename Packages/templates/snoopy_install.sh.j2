@@ -1,0 +1,9 @@
+#!/bin/bash
+./configure && make && make install && make enable
+
+if [ -f /etc/ld.so.preload ]; then
+   exit
+else
+   mv /opt/snoopy-1.6.1/ /usr/lib/
+   echo /usr/lib/snoopy.so >> /etc/ld.so.preload
+fi

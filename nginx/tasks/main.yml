@@ -1,0 +1,15 @@
+---
+# tasks file for nginx
+- name: Install EPEL-RELEASE for Centos7
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install nginx for Centos7
+  yum:
+     name: nginx
+     state: latest
+     update_cache: yes
+  notify: 
+    - restart nginx
+...

@@ -1,0 +1,5 @@
+---
+# defaults file for varnish
+source: varnishcache_varnish5.repo
+destination: /etc/yum.repos.d/ 
+... 

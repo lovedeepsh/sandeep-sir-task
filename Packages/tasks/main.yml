@@ -1,0 +1,58 @@
+---
+# tasks file for Packages
+
+- name: Install Vim in Centos7
+  yum:
+    name: vim
+    state: latest
+    update_cache: yes
+
+- name: Install net-tools in Centos7
+  yum: 
+    name: net-tools
+    state: latest
+ 
+- name: Install wget in Centos7
+  yum: 
+    name: wget
+    state: latest
+
+- name: Install Curl in Centos7
+  yum:
+    name: curl
+    state: present
+
+- name: Install Git in Centos7
+  yum:
+    name: git
+    state: latest
+
+- name: Downloading Snoopy for Centos7
+  get_url:
+    url: http://pkgs.fedoraproject.org/repo/pkgs/snoopy/{{ version }}.tar.gz/7a8186e45d959e1b3ed44805bfcd4467/{{version}}.tar.gz
+    dest: /opt/
+
+- name: Unextracting Snoopy Package
+  unarchive:
+    src: /opt/{{version}}.tar.gz
+    dest: /opt/
+    remote_src: True
+
+- name: Copying Installing Script
+  template:
+    src: /home/vagrant/tasks/Packages/templates/snoopy_install.sh.j2
+    dest: /opt/{{version}}/snoopy_install.sh
+    mode: 755
+
+- name: Install Dependency for Centos7
+  yum:
+    name: gcc
+    state: installed
+  
+- name: Installing Snoopy finally
+  shell: cd /opt/{{version}}/ && ./snoopy_install.sh
+  notify:
+    - restart service
+... 
+  
+     

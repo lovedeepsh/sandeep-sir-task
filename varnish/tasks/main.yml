@@ -1,0 +1,49 @@
+---
+# tasks file for varnish
+- name: Enabling the EPEL repository to install several dependency packages
+  yum:
+    name: "epel-release"
+    state: present
+ 
+- name: Updating the package repository
+  yum:
+    name: '*'
+    state: latest
+
+
+# Install pygpgme, a package for handling GPG signatures and yum-utils, a collection of useful utilities that extend yum’s native features in various ways.
+
+- name: Installing 'pygpgme' package for handling GPG signatures and yum-utils
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - pygpgme
+    - yum-utils
+
+
+#  Create a file named /etc/yum.repos.d/varnishcache_varnish5.repo that contains the repository configuration below.
+
+- name: Copy repository configuration
+  copy:
+    src: "{{source}}" 
+    dest: "{{destination}}"
+    owner: root
+    group: root
+    mode: 0644
+
+
+# Running the command below to update your local yum cache and install varnish cache 5 package
+
+- name: Installing varnish cache 5 package
+  command: sudo yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish5'
+
+
+# Finally Installing Varnish
+
+- name: Installing Varnish
+  yum:
+    name: varnish
+    state: present
+...
+   
